@@ -1,10 +1,16 @@
 <template>
   <div>
-    <h2>Five Day Hourly Forecast <span v-if="weatherData"> for {{ weatherData.city.name }}, {{weatherData.city.country }}</span></h2>
+    <h2>
+      Five Day Hourly Forecast
+      <span v-if="weatherData">for {{ weatherData.city.name }}, {{weatherData.city.country }}</span>
+    </h2>
     <message-container v-bind:messages="messages"></message-container>
     <p>
-      <router-link to="/">Home</router-link> |
-      <router-link v-bind:to="{ name: 'CurrentWeather', params: { cityId: $route.params.cityId } }">Current Weather <span v-if="weatherData"> for {{ weatherData.city.name }}, {{weatherData.city.country }}</span></router-link>
+      <router-link to="/">Home</router-link>|
+      <router-link v-bind:to="{ name: 'CurrentWeather', params: { cityId: $route.params.cityId } }">
+        Current Weather
+        <span v-if="weatherData">for {{ weatherData.city.name }}, {{weatherData.city.country }}</span>
+      </router-link>
     </p>
 
     <ul v-if="weatherData" class="forecast">
@@ -46,22 +52,22 @@ export default {
   created () {
     this.showLoading = true;
 
-    // TODO: Cache these API results using the City ID as the label
+      let cacheLabel = 'forecast_' + this.$route.params.cityId;
+      let cacheExpiry = 15 * 60 * 1000; // 15 minutes
 
-    // TODO: Create a cacheLabel value
-
-    // TODO: Create a cacheExpiry value set to 15 minutes in milliseconds
-
-    // TODO: Use a conditional to check if the API query has been cached
-    // If so, use that cached data
-    // If not, make the API call and cache the data with the cacheLabel and cacheExpiry defined above
-
+if (this.$ls.get(cacheLabel)){
+      console.log('Cached query detected.');
+      this.results = this.$ls.get(cacheLabel);
+      this.showLoading = false;
+    } else {
+    console.log('No cache detected. Making API request.');
     API.get('forecast', {
       params: {
           id: this.$route.params.cityId
       }
     })
     .then(response => {
+      this.$ls.set(cacheLabel, response.data, cacheExpiry);
       this.showLoading = false;
       this.weatherData = response.data;
     })
@@ -72,6 +78,7 @@ export default {
         text: error.message
       });
     });
+    }
   },
   filters: {
     formatDate: function (timestamp){
@@ -98,13 +105,16 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 1s
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
 }
-.fade-enter, .fade-leave-to {
-  opacity: 0
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
