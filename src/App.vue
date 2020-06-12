@@ -13,7 +13,7 @@ export default {
     return {
       results: null,
       query: null
-    };
+    }
   }
 };
 </script>
