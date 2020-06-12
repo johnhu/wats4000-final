@@ -1,37 +1,33 @@
 <template>
 <div>
-    <my-list :myList="items"></my-list>
-
-          <form v-on:submit.prevent="submitSearch(true)">
-            <p>
-          <input type="text" v-model="query" placeholder="enter a movie" />
+    <form v-on:submit.prevent="searchMovies(query)">
+          <input type="text" v-model="query" placeholder="enter a movie">
           <button type="submit">Go</button>
-            </p>
           </form>
          <!-- <load-spinner v-if="showLoading"></load-spinner> -->
           <ul class="results" v-if="results && results.list.length > 0"></ul>
+          <my-list :myList="items"></my-list>
           </div>
 </template>
 
 <script>
-import api from "../common/api.js";
 
   export default {
     data () {
       return {
         searchKey:'',
         moviesList: [],
-        results: [],
-        
+        results: null,
+        query: null
       }
     },
       methods: {
-        searchMovies(){
-          var url='http://www.omdbapi.com/?s='+this.searchKey+api;
-          fetch(url)
+        searchMovies(query){
+          this.results=[];
+          fetch('http://www.omdbapi.com/?s='+query)
           .then(response=>response.json())
           .then(data=>{
-            console.log(data)
+            this.moviesList=data;
           });
         }
       }

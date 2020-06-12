@@ -2,18 +2,6 @@
   <div class="results">
     <h1>Found {{results}} results
     </h1>
-    <p class="search-meta"><!--
-      <span class="current-page">
-        <b>Current Page:</b> {{page}}
-      </span>
-      <span class="total-pages">
-        <b>Pages:</b> {{total_pages}}
-      </span>
-      <span class="total-results">
-        <b>Count:</b> {{total_results}}
-      </span>-->
-    </p>
-
     <ul>
       <li v-for="result in results" :key="result" class="movie-item">
         <h2 class="title">

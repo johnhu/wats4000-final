@@ -1,4 +1,4 @@
-# itunes-search
+# omdb-search-and-save
 
 ## Project setup
 ```
