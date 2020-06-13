@@ -1,26 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import CitySearch from '@/views/CitySearch'
-import CurrentWeather from '@/views/CurrentWeather'
-import Forecast from '@/views/Forecast'
+import Search from '@/views/Search'
+import LearnMore from '@/views/LearnMore'
 
 Vue.use(VueRouter)
 
   const routes = [
     {
       path: '/',
-      name: 'CitySearch',
-      component: CitySearch
+      name: 'Search',
+      component: Search
     },
     {
-      path: '/:cityId/current',
-      name: 'CurrentWeather',
-      component: CurrentWeather
-    },
-    {
-      path: '/:cityId/forecast',
-      name: 'Forecast',
-      component: Forecast
+      path: '/',
+      name: 'LearnMore',
+      component: LearnMore
     }
 ]
 
