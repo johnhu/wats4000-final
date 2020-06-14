@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Search from '@/views/Search'
+import LearnMore from '@/views/LearnMore'
 
 Vue.use(VueRouter)
 
@@ -9,6 +10,11 @@ Vue.use(VueRouter)
       path: '/',
       name: 'Search',
       component: Search
+    },
+    {
+      path: '/about',
+      name: 'LearnMore',
+      component: LearnMore
     }
 ]
 

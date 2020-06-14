@@ -1,106 +1,144 @@
 <template>
-<div>
-    <form v-on:submit.prevent="searchMovies(query)">
-          <input type="text" v-model="query" placeholder="enter a movie">
-          <button type="submit">Go</button>
-          </form>
-         <!-- <load-spinner v-if="showLoading"></load-spinner> -->
-          <ul class="results" v-if="results && results.list.length > 0"></ul>
-          <my-list :myList="items"></my-list>
-          </div>
+  <div>
+    <short-cuts :shortcuts="listItems"></short-cuts>
+    <message-container v-bind:messages="messages"></message-container>
+    <form v-on:submit.prevent="getMovies" id="form">
+      <p>Enter a movie:</p>
+      <input type="text" v-model="query" placeholder="Inception" id="text-box" />
+      <button type="submit" id="send-button">Go</button>
+    </form>
+    <load-spinner v-if="showLoading"></load-spinner>
+    <!--Iterates through results and displays movie search data in a list -->
+    <ul class="cities" v-if="results && results.Search.length > 0">
+      <li v-for="(movie,index) in results.Search" :key="index">
+        <h2>{{movie.Title}}</h2>
+        <h3 class="year">{{movie.Year}}</h3>
+        <img :src="movie.Poster" class="poster" />
+        <br />
+        <p>
+          <router-link
+            v-bind:to="{ name: 'LearnMore', params: { 
+              movieId: movie.imdbID} }"
+          >Learn More</router-link>
+        </p>
+        <p>
+          <button class="save" v-on:click="saveMovie(movie)">Add to Shortcuts</button>
+        </p>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
+import ReelSpinner from "@/components/ReelSpinner";
+import MessageContainer from "@/components/MessageContainer";
+import Shortcuts from "@/components/Shortcuts";
 
-  export default {
-    data () {
-      return {
-        searchKey:'',
-        moviesList: [],
-        results: null,
-        query: null
-      }
+export default {
+  name: "Search",
+  components: {
+    "load-spinner": ReelSpinner,
+    "message-container": MessageContainer,
+    "short-cuts": Shortcuts
+  },
+  data() {
+    return {
+      results: null,
+      query: "",
+      showLoading: false,
+      messages: [],
+      listItems: []
+    };
+  },
+  methods: {
+    /*movie is passed into listItems array*/
+
+    saveMovie: function(movie) {
+      this.listItems.push(movie);
     },
-      methods: {
-        searchMovies(query){
-          this.results=[];
-          fetch('http://www.omdbapi.com/?s='+query)
-          .then(response=>response.json())
-          .then(data=>{
-            this.moviesList=data;
+    getMovies: function() {
+      this.results = null;
+      this.showLoading = true;
+
+      axios
+        .get("http://www.omdbapi.com/?apikey=b72bc356", {
+          /*Sends query as a search item, using "type" to filter results */
+
+          params: {
+            s: this.query,
+            type: "movie"
+          }
+        })
+        .then(response => {
+          this.results = response.data;
+          this.showLoading = false;
+        })
+        .catch(error => {
+          this.messages.push({
+            type: "error",
+            text: error.message
           });
-        }
-      }
+          this.showLoading = false;
+        });
     }
+  }
+};
 </script>
 
 <style scoped>
-  .album-box {
-    position: relative;
-    display: inline-block;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  }
+.errors li {
+  color: red;
+  border: solid red 1px;
+  padding: 5px;
+}
+h1,
+h2 {
+  font-weight: normal;
+  margin: 2px;
+}
+.save {
+  background-color: darkslategray;
+  color: white;
+  padding: 10px;
+}
 
-  .album-box:hover {
-    -webkit-transform: scale(1.12, 1.12);
-    transform: scale(1.12, 1.12);
-  }
+#form {
+  margin-bottom: 5px;
+  margin-top: 30px;
+}
 
-  .album-card {
-    width: 160px;
-  }
+#text-box,
+#send-button {
+  padding: 10px;
+}
 
-  .album-card:hover {
-    cursor: pointer;
-  }
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  width: 300px;
+  min-height: 300px;
+  border: solid 1px #e8e8e8;
+  padding: 10px;
+  margin: 5px;
+}
 
-  .album-card:hover .play-btn {
-    display: block;
-  }
+a {
+  color: yellow;
+}
 
-  .album-cover,
-  .album-cover img {
-    border-radius: 2px !important;
-  }
+.poster {
+  width: 60%;
+}
 
-  .album-cover:active {
-    animation: pop 0.3s linear 1;
-  }
-
-  @keyframes pop{
-    50%  { transform: scale(1.02); }
-  }
-
-  .album-info div {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .v-card {
-    background: #1C1F37;
-    height: 100%;
-  }
-
-  .v-card__title,
-  .v-card__text {
-    background: #262B48;
-  }
-
-  .play-btn {
-    padding-top: 110px;
-    padding-right: 100px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: none;
-    z-index: 9;
-  }
-
-  .v-input--radio-group .v-radio {
-       margin-bottom: 8px;
-  }
+.year {
+  font-size: 70%;
+  margin-left: 2px;
+  color: lightgray;
+}
 </style>
+
+
