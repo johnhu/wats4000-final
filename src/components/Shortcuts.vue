@@ -1,7 +1,7 @@
 <template>
   <ul class="shortcuts">
     <li>
-      <h2>Shortcuts</h2>
+      <h2 id="shortcut-h">Shortcuts</h2>
     </li>
     <li v-if="shortcuts.length < 1">Pin your favorite movies here</li>
     <li v-for="(movie,index) in shortcuts" :key="index">
@@ -39,6 +39,11 @@ export default {
   width: 25%;
   float: right;
 }
+
+#shortcut-h {
+  margin-top: 3px;
+}
+
 .list-item {
   color: lightgray;
 }

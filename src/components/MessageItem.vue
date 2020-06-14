@@ -1,6 +1,6 @@
 <template>
-  <li v-bind:class="[message.type, 'message']" v-show="showMessage">
-    {{ message.text }}
+  <li class="error" v-show="showMessage">
+    Error: {{ message.Error }}
     <button v-on:click="close">close</button>
   </li>
 </template>
@@ -28,15 +28,13 @@ export default {
 </script>
 
 <style scoped>
-.message {
-  margin: 5px auto;
-  padding: 5px;
-  font-size: 1rem;
-  width: 60%;
-}
 .error {
-  background: pink;
-  color: red;
+  background: darkorchid;
+  color: white;
+  margin: 2px auto;
+  padding: 2px;
+  font-size: 1rem;
+  width: 75%;
 }
 .success {
   background: green;

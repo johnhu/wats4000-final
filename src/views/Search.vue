@@ -1,7 +1,7 @@
 <template>
   <div>
-    <short-cuts :shortcuts="listItems"></short-cuts>
     <message-container v-bind:messages="messages"></message-container>
+    <short-cuts :shortcuts="listItems" class="shortcuts"></short-cuts>
     <form v-on:submit.prevent="getMovies" id="form">
       <p>Enter a movie:</p>
       <input type="text" v-model="query" placeholder="Inception" id="text-box" />
@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     /*movie is passed into listItems array*/
-
     saveMovie: function(movie) {
       this.listItems.push(movie);
     },
@@ -64,23 +63,22 @@ export default {
       axios
         .get("http://www.omdbapi.com/?apikey=b72bc356", {
           /*Sends query as a search item, using "type" to filter results */
-
           params: {
             s: this.query,
             type: "movie"
           }
         })
         .then(response => {
-          this.results = response.data;
-          this.showLoading = false;
-        })
-        .catch(error => {
-          this.messages.push({
-            type: "error",
-            text: error.message
-          });
-          this.showLoading = false;
+          this.results = response;
+        /*conditional used for error handling, where a false response
+        will cause error data to be pushed to messages array */
+          if (this.results.data.Response == "False") {
+            this.messages.push(response.data);
+          } else {
+            this.results = response.data;
+          }
         });
+      this.showLoading = false;
     }
   }
 };
@@ -106,6 +104,10 @@ h2 {
 #form {
   margin-bottom: 5px;
   margin-top: 30px;
+}
+
+.shortcuts {
+  margin: 0px;
 }
 
 #text-box,
@@ -138,6 +140,12 @@ a {
   font-size: 70%;
   margin-left: 2px;
   color: lightgray;
+}
+@media only screen and (max-width: 375px) {
+  #form,
+  .shortcuts {
+    display: inline-grid;
+  }
 }
 </style>
 
