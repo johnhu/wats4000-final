@@ -29,8 +29,8 @@ export default {
 
 <style scoped>
 .error {
-  background: darkorchid;
-  color: white;
+  background: rgb(223, 70, 121);
+  color: rgb(255, 255, 255);
   margin: 2px auto;
   padding: 2px;
   font-size: 1rem;

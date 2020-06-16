@@ -1,8 +1,11 @@
 <template>
   <div>
+    <h1>Movie Search & Learn</h1>
     <message-container v-bind:messages="messages"></message-container>
     <p>
-      <router-link to="/">Home</router-link>
+      <router-link to="/">Home</router-link> |
+      <router-link :to="{ name: 'Search', params: { 
+              query: $route.params.query } }">Back</router-link>
     </p>
     <load-spinner v-if="showLoading"></load-spinner>
     <section class="container">
@@ -44,7 +47,6 @@ export default {
     return {
       movieData: Object,
       messages: [],
-      query: "",
       showLoading: false
     };
   },
@@ -99,7 +101,7 @@ export default {
   }
   h1,
   h2 {
-    font-weight: normal;
+    font-weight: bold;
   }
 
   ul {

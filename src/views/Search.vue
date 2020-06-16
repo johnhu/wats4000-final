@@ -1,24 +1,25 @@
 <template>
   <div>
+    <h1>Movie Search & Learn</h1>
     <message-container v-bind:messages="messages"></message-container>
     <short-cuts :shortcuts="listItems" class="shortcuts"></short-cuts>
     <form v-on:submit.prevent="getMovies" id="form">
       <p>Enter a movie:</p>
-      <input type="text" v-model="query" placeholder="Inception" id="text-box" />
+      <input type="text" v-model="$route.params.query" placeholder="Inception" id="text-box" />
       <button type="submit" id="send-button">Go</button>
     </form>
     <load-spinner v-if="showLoading"></load-spinner>
     <!--Iterates through results and displays movie search data in a list -->
     <ul class="cities" v-if="results && results.Search.length > 0">
       <li v-for="(movie,index) in results.Search" :key="index">
-        <h2>{{movie.Title}}</h2>
+        <h2 class="title">{{movie.Title}}</h2>
         <h3 class="year">{{movie.Year}}</h3>
         <img :src="movie.Poster" class="poster" />
         <br />
         <p>
           <router-link
             v-bind:to="{ name: 'LearnMore', params: { 
-              movieId: movie.imdbID} }"
+              movieId: movie.imdbID, query: $route.params.query } }"
           >Learn More</router-link>
         </p>
         <p>
@@ -51,9 +52,13 @@ export default {
       listItems: []
     };
   },
+  created() {
+    this.getMovies();
+  },
   methods: {
     /*movie is passed into listItems array*/
     saveMovie: function(movie) {
+
       this.listItems.push(movie);
     },
     getMovies: function() {
@@ -64,13 +69,13 @@ export default {
         .get("http://www.omdbapi.com/?apikey=b72bc356", {
           /*Sends query as a search item, using "type" to filter results */
           params: {
-            s: this.query,
+            s: this.$route.params.query,
             type: "movie"
           }
         })
         .then(response => {
           this.results = response;
-        /*conditional used for error handling, where a false response
+          /*conditional used for error handling, where a false response
         will cause error data to be pushed to messages array */
           if (this.results.data.Response == "False") {
             this.messages.push(response.data);
@@ -92,8 +97,9 @@ export default {
 }
 h1,
 h2 {
-  font-weight: normal;
-  margin: 2px;
+  font-weight: bold;
+  margin: 21px;
+  margin-left: 0;
 }
 .save {
   background-color: darkslategray;
@@ -110,9 +116,48 @@ h2 {
   margin: 0px;
 }
 
-#text-box,
+p {
+  margin-bottom: 5px;
+}
+
+#text-box {
+  display: inline-flex;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1.5px solid white;
+  padding: 3px;
+  width: 275px;
+  height: 32px;
+}
+
+#text-box:focus {
+  background-color: #3b3f42;
+}
+
 #send-button {
   padding: 10px;
+  background-color: transparent;
+  margin-left: 7px;
+  border: 1.5px solid;
+  border-color: white;
+  color: white;
+}
+
+::placeholder {
+  color: rgb(156, 156, 156);
+  font-size: 1.2em;
+}
+
+input {
+  color: lightgrey;
+}
+
+#send-button:hover {
+  background-color: #3b3f42;
+}
+
+.title {
+  margin: 2px;
 }
 
 ul {
@@ -123,7 +168,7 @@ li {
   display: inline-block;
   width: 300px;
   min-height: 300px;
-  border: solid 1px #e8e8e8;
+  border: solid 1.5px #757575;
   padding: 10px;
   margin: 5px;
 }
@@ -137,7 +182,7 @@ a {
 }
 
 .year {
-  font-size: 70%;
+  font-size: 75%;
   margin-left: 2px;
   color: lightgray;
 }
@@ -145,6 +190,7 @@ a {
   #form,
   .shortcuts {
     display: inline-grid;
+    float: left;
   }
 }
 </style>
