@@ -1,16 +1,18 @@
 <template>
-  <div class="content">
-    <h1>Movie Search & Learn</h1>
-    <p>Enter a movie:</p>
-    <input
-      v-on:keyup.enter="submitQuery"
-      type="text"
-      v-model="query"
-      placeholder="Inception"
-      id="text-box"
-    />
-    <button v-on:click="submitQuery" type="submit" id="send-button">Go</button>
-  </div>
+  <transition name="fade">
+    <div class="content">
+      <h1>Movie Search & Learn</h1>
+      <p>Enter a movie:</p>
+      <input
+        v-on:keyup.enter="submitQuery"
+        type="text"
+        v-model="query"
+        placeholder="Inception"
+        id="text-box"
+      />
+      <button v-on:click="submitQuery" type="submit" id="send-button">Go</button>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -69,7 +71,7 @@ p {
   height: 32px;
 }
 
-#text-box:focus {
+#text-box:hover {
   background-color: #3b3f42;
 }
 
@@ -93,6 +95,16 @@ input {
 
 #send-button:hover {
   background-color: #3b3f42;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 
 @media only screen and (max-width: 670px) {

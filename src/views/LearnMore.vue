@@ -2,15 +2,13 @@
   <div>
     <h1>Movie Search & Learn</h1>
     <message-container v-bind:messages="messages"></message-container>
-    <p>
-      <router-link to="/">Home</router-link> |
-      <router-link
-        :to="{ name: 'Search', params: { 
+    <router-link to="/">Home</router-link>|
+    <router-link
+      :to="{ name: 'Search', params: { 
               query: $route.params.query } }"
-      >Back</router-link>
-    </p>
-    <load-spinner v-if="showLoading"></load-spinner>
+    >Back</router-link>
     <section class="container">
+      <load-spinner v-if="showLoading"></load-spinner>
       <div class="movie-info">
         <h2>{{ movieData.Title }}</h2>
         <h3>{{ movieData.Year }}</h3>

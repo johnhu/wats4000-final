@@ -58,7 +58,6 @@ export default {
   methods: {
     /*movie is passed into listItems array*/
     saveMovie: function(movie) {
-
       this.listItems.push(movie);
     },
     getMovies: function() {
@@ -130,7 +129,7 @@ p {
   height: 32px;
 }
 
-#text-box:focus {
+#text-box:hover {
   background-color: #3b3f42;
 }
 
