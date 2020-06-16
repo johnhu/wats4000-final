@@ -4,8 +4,10 @@
     <message-container v-bind:messages="messages"></message-container>
     <p>
       <router-link to="/">Home</router-link> |
-      <router-link :to="{ name: 'Search', params: { 
-              query: $route.params.query } }">Back</router-link>
+      <router-link
+        :to="{ name: 'Search', params: { 
+              query: $route.params.query } }"
+      >Back</router-link>
     </p>
     <load-spinner v-if="showLoading"></load-spinner>
     <section class="container">
@@ -133,6 +135,19 @@ export default {
   }
   a {
     color: yellow;
+  }
+}
+@media only screen and (max-width: 365px) {
+  .movie-info {
+    margin-bottom: 20px;
+    width: 95%;
+  }
+  .movie-poster {
+    margin-left: 0;
+  }
+
+  img {
+    width: 95%;
   }
 }
 </style>

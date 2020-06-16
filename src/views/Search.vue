@@ -10,8 +10,8 @@
     </form>
     <load-spinner v-if="showLoading"></load-spinner>
     <!--Iterates through results and displays movie search data in a list -->
-    <ul class="cities" v-if="results && results.Search.length > 0">
-      <li v-for="(movie,index) in results.Search" :key="index">
+    <ul class="movies" v-if="results && results.Search.length > 0">
+      <li class="search-result" v-for="(movie,index) in results.Search" :key="index">
         <h2 class="title">{{movie.Title}}</h2>
         <h3 class="year">{{movie.Year}}</h3>
         <img :src="movie.Poster" class="poster" />
@@ -190,7 +190,18 @@ a {
   #form,
   .shortcuts {
     display: inline-grid;
+    margin-top: 0;
     float: left;
+  }
+
+  #text-box,
+  #send-button {
+    width: 232px;
+    margin: 3px;
+  }
+
+  .search-result {
+    width: 92%;
   }
 }
 </style>

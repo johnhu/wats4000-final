@@ -56,4 +56,14 @@ export default {
   padding: 2px;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 375px) {
+  #shortcut-h{
+  margin-bottom: 5px;
+  }
+
+  .shortcuts {
+    width: 232px;
+  }
+}
 </style>
