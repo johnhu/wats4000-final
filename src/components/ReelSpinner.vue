@@ -16,12 +16,6 @@ export default {
 </script>
 
 <style scoped>
-html {
-  height: 100%;
-}
-body {
-  background: linear-gradient(#fff, #bbb);
-}
 .container {
   text-align: center;
 }
@@ -31,7 +25,7 @@ body {
   height: 100px;
   line-height: 100%;
   vertical-align: middle;
-  background: url(https://pixabay.com/static/uploads/photo/2013/07/12/14/09/film-reel-147850_960_720.png);
+  background: url('../assets/img/loading-reel.png');
   background-size: 100px 100px;
   background-repeat: no-repeat;
   border-radius: 50%;
@@ -56,5 +50,5 @@ div i {
     transform: rotate(360deg);
   }
 }
-/* Spinner animation and markup borrowed from @aburd - https://codepen.io/aburd/ */
+/* Spinner animation and markup borrowed from @aburd and modified - https://codepen.io/aburd/ */
 </style>

@@ -3,13 +3,14 @@
     <h1>Movie Search & Learn</h1>
     <message-container v-bind:messages="messages"></message-container>
     <short-cuts :shortcuts="listItems" class="shortcuts"></short-cuts>
-    <form v-on:submit.prevent="getMovies" id="form">
+    <div id="form">
       <p>Enter a movie:</p>
-      <input type="text" v-model="$route.params.query" placeholder="Inception" id="text-box" />
-      <button type="submit" id="send-button">Go</button>
-    </form>
-    <load-spinner v-if="showLoading"></load-spinner>
+      <input v-on:keyup.enter="getMovies" v-model="$route.params.query" placeholder="Inception" id="text-box" />
+      <button v-on:click="getMovies" id="send-button">Go</button>
+    </div>
     <!--Iterates through results and displays movie search data in a list -->
+    <div>
+    <load-spinner v-if="showLoading"></load-spinner>
     <ul class="movies" v-if="results && results.Search.length > 0">
       <li class="search-result" v-for="(movie,index) in results.Search" :key="index">
         <h2 class="title">{{movie.Title}}</h2>
@@ -27,6 +28,7 @@
         </p>
       </li>
     </ul>
+    </div>
   </div>
 </template>
 

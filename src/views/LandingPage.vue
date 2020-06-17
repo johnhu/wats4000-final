@@ -3,14 +3,8 @@
     <div class="content">
       <h1>Movie Search & Learn</h1>
       <p>Enter a movie:</p>
-      <input
-        v-on:keyup.enter="submitQuery"
-        type="text"
-        v-model="query"
-        placeholder="Inception"
-        id="text-box"
-      />
-      <button v-on:click="submitQuery" type="submit" id="send-button">Go</button>
+      <input v-on:keyup.enter="submitQuery" v-model="query" placeholder="Inception" id="text-box" />
+      <button v-on:click="submitQuery" id="send-button">Go</button>
     </div>
   </transition>
 </template>

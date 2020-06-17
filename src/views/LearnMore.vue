@@ -1,13 +1,12 @@
 <template>
   <div>
     <h1>Movie Search & Learn</h1>
-    <message-container v-bind:messages="messages"></message-container>
-    <router-link to="/">Home</router-link>|
+    <router-link to="/">Home</router-link> |
     <router-link
       :to="{ name: 'Search', params: { 
               query: $route.params.query } }"
     >Back</router-link>
-    <section class="container">
+    <section v-if="movieData!=null" class="container">
       <load-spinner v-if="showLoading"></load-spinner>
       <div class="movie-info">
         <h2>{{ movieData.Title }}</h2>
@@ -35,19 +34,16 @@
 <script>
 import axios from "axios";
 import ReelSpinner from "@/components/ReelSpinner";
-import MessageContainer from "@/components/MessageContainer";
 
 export default {
   name: "LearnMore",
   components: {
-    "load-spinner": ReelSpinner,
-    "message-container": MessageContainer
+    "load-spinner": ReelSpinner
   },
   data() {
     return {
       movieData: Object,
-      messages: [],
-      showLoading: false
+      showLoading: true
     };
   },
   /*created hook runs methods upon page load */
