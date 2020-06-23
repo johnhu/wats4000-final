@@ -1,17 +1,20 @@
 <template>
-  <transition name="slide">
-    <div>
-      <div class="about">
-        <p v-on:click="toggleAbout" class="about-toggle">About</p>
-        <about id="about"></about>
+  <div id="body">
+    <div class="about">
+      <p v-on:click="toggleAbout" class="about-toggle">About</p>
+      <about id="about"></about>
+    </div>
+      <div class="content">
+        <h1>Movie Search & Learn</h1>
+        <input
+          v-on:keyup.enter="submitQuery"
+          v-model="query"
+          placeholder="Enter a movie, ie Inception"
+          id="text-box"
+        />
+        <button v-on:click="submitQuery" id="send-button">Search</button>
       </div>
-    <div class="content">
-      <h1>Movie Search & Learn</h1>
-      <input v-on:keyup.enter="submitQuery" v-model="query" placeholder="Enter a movie, ie Inception" id="text-box" />
-      <button v-on:click="submitQuery" id="send-button">Search</button>
-    </div>
-    </div>
-  </transition>
+  </div>
 </template>
 
 <script>
@@ -111,7 +114,7 @@ p {
 }
 
 #text-box:hover {
-  background-color: #3b3f42;
+  background-color: rgb(59, 63, 66, 0.5);
 }
 
 #send-button {
@@ -123,6 +126,10 @@ p {
   color: white;
 }
 
+#send-button:hover {
+  background-color: rgb(59, 63, 66, 0.5);
+}
+
 ::placeholder {
   color: rgb(156, 156, 156);
   font-size: 1.2em;
@@ -132,42 +139,6 @@ input {
   color: lightgrey;
 }
 
-#send-button:hover {
-  background-color: #3b3f42;
-}
-
-.slide-enter-active {
-   -moz-transition-duration: 0.7s;
-   -webkit-transition-duration: 0.7s;
-   -o-transition-duration: 0.7s;
-   transition-duration: 0.7s;
-   -moz-transition-timing-function: ease-in;
-   -webkit-transition-timing-function: ease-in;
-   -o-transition-timing-function: ease-in;
-   transition-timing-function: ease-in;
-}
-
-.slide-leave-active {
-   -moz-transition-duration: 0.7s;
-   -webkit-transition-duration: 0.7s;
-   -o-transition-duration: 0.7s;
-   transition-duration: 0.7s;
-   -moz-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-   -webkit-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-   -o-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-}
-
-.slide-enter-to, .slide-leave {
-   max-height: 500px;
-   overflow: hidden;
-}
-
-.slide-enter, .slide-leave-to {
-   overflow: hidden;
-   max-height: 0;
-}
-
 @media only screen and (max-width: 670px) {
   #send-button {
     padding-left: 20px;
@@ -175,20 +146,19 @@ input {
     margin-top: 15px;
     float: center;
   }
-  
+
   #about {
     position: relative;
-    background-color: rgb(43,45,47, 0.6);
+    background-color: rgb(43, 45, 47, 0.6);
     z-index: 6;
   }
 }
 
 @media only screen and (min-width: 670px) {
   #about {
-  width: 33%;
+    width: 33%;
   }
 }
-
 </style>
 
 

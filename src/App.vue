@@ -23,5 +23,6 @@ export default {
   width: 75%;
   margin: 20px auto;
   padding: 2px;
+  overflow-x: hidden;
 }
 </style>

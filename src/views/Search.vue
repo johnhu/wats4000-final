@@ -142,7 +142,7 @@ p {
 }
 
 #text-box:hover {
-  background-color: #3b3f42;
+  background-color: rgb(59, 63, 66, 0.5);
 }
 
 #send-button {
@@ -164,7 +164,7 @@ input {
 }
 
 #send-button:hover {
-  background-color: #3b3f42;
+  background-color: rgb(59, 63, 66, 0.5);
 }
 
 .title {
