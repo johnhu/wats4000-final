@@ -66,8 +66,8 @@ export default {
           type: "error",
           text: error.message
         });
-        this.showLoading = false;
       });
+    this.showLoading = false;
   }
 };
 </script>

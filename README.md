@@ -1,6 +1,4 @@
-# wats4000-final
-
-Movie Search and Learn
+# Movie Search and Learn
 <br>Author: John Hu
 
 ## Project description

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>Loading...</h2>
     <div class="container">
       <div class="reel">
         <i></i>
@@ -21,15 +20,14 @@ export default {
 }
 .reel {
   display: inline-block;
+  margin-top: 50px;
   width: 100px;
   height: 100px;
-  line-height: 100%;
   vertical-align: middle;
   background: url('../assets/img/loading-reel.png');
   background-size: 100px 100px;
   background-repeat: no-repeat;
   border-radius: 50%;
-  text-align: center;
   animation-duration: 4s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;

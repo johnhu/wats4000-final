@@ -4,30 +4,35 @@
     <message-container v-bind:messages="messages"></message-container>
     <short-cuts :shortcuts="listItems" class="shortcuts"></short-cuts>
     <div id="form">
-      <p>Enter a movie:</p>
-      <input v-on:keyup.enter="getMovies" v-model="$route.params.query" placeholder="Inception" id="text-box" />
-      <button v-on:click="getMovies" id="send-button">Go</button>
+      <input
+        v-on:keyup.enter="getMovies"
+        v-model="$route.params.query"
+        placeholder="Enter a movie, ie Inception"
+        id="text-box"
+      />
+      <button v-on:click="getMovies" id="send-button">Search</button>
     </div>
     <!--Iterates through results and displays movie search data in a list -->
     <div>
-    <load-spinner v-if="showLoading"></load-spinner>
-    <ul class="movies" v-if="results && results.Search.length > 0">
-      <li class="search-result" v-for="(movie,index) in results.Search" :key="index">
-        <h2 class="title">{{movie.Title}}</h2>
-        <h3 class="year">{{movie.Year}}</h3>
-        <img :src="movie.Poster" class="poster" />
-        <br />
-        <p>
-          <router-link
-            v-bind:to="{ name: 'LearnMore', params: { 
+      <load-spinner v-if="showLoading"></load-spinner>
+      <ul class="movies" v-if="results && results.Search.length > 0">
+        <li class="search-result" v-for="(movie,index) in results.Search" :key="index">
+          <h2 class="title">{{movie.Title}}</h2>
+          <h3 class="year">{{movie.Year}}</h3>
+          <img :src="movie.Poster" class="poster" />
+          <br />
+          <p>
+            <router-link
+              v-bind:to="{ name: 'LearnMore', params: { 
               movieId: movie.imdbID, query: $route.params.query } }"
-          >Learn More</router-link>
-        </p>
-        <p>
-          <button class="save" v-on:click="saveMovie(movie)">Add to Shortcuts</button>
-        </p>
-      </li>
-    </ul>
+              class="learn-more"
+            >Learn More</router-link>
+          </p>
+          <p>
+            <button class="save" v-on:click="saveMovie(movie)">Add to Shortcuts</button>
+          </p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -75,16 +80,13 @@ export default {
           }
         })
         .then(response => {
-          this.results = response;
-          /*conditional used for error handling, where a false response
-        will cause error data to be pushed to messages array */
-          if (this.results.data.Response == "False") {
+          this.results = response.data;
+          /*A "False" response will push data to error messages array */
+          if (this.results.Response == "False") {
             this.messages.push(response.data);
-          } else {
-            this.results = response.data;
           }
+          this.showLoading = false;
         });
-      this.showLoading = false;
     }
   }
 };
@@ -106,6 +108,14 @@ h2 {
   background-color: darkslategray;
   color: white;
   padding: 10px;
+}
+
+.save:hover {
+  background-color: #293d3d;
+}
+
+.learn-more:hover {
+  color: rgb(206, 206, 29);
 }
 
 #form {
@@ -145,12 +155,12 @@ p {
 }
 
 ::placeholder {
-  color: rgb(156, 156, 156);
+  color: rgb(211, 211, 211);
   font-size: 1.2em;
 }
 
 input {
-  color: lightgrey;
+  color: rgb(255, 255, 255);
 }
 
 #send-button:hover {
@@ -167,10 +177,11 @@ ul {
 }
 li {
   display: inline-block;
-  width: 300px;
+  text-align: center;
+  width: 235px;
   min-height: 300px;
   border: solid 1.5px #757575;
-  padding: 10px;
+  padding: 5px;
   margin: 5px;
 }
 
@@ -187,20 +198,23 @@ a {
   margin-left: 2px;
   color: lightgray;
 }
-@media only screen and (max-width: 375px) {
-  #form,
+@media only screen and (max-width: 426px) {
   .shortcuts {
-    display: inline-grid;
-    margin-top: 0;
+    display: flexbox;
+    margin-bottom: 10px;
     float: left;
+    width: 90%;
   }
 
-  #text-box,
+  #text-box {
+    margin-left: 10px;
+    width: 90%;
+  }
   #send-button {
-    width: 232px;
-    margin: 3px;
+    width: 92%;
+    margin-top: 7px;
+    margin-left: 10px;
   }
-
   .search-result {
     width: 92%;
   }
