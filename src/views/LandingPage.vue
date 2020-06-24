@@ -13,24 +13,34 @@
           id="text-box"
         />
         <button v-on:click="submitQuery" id="send-button">Search</button>
+        <div class=shortcuts>
+        <short-cuts :shortcuts="listItems"></short-cuts>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
 import About from "@/components/About";
+import Shortcuts from "@/components/Shortcuts";
 
 export default {
-  name: "Search",
+  name: "LandingPage",
   data() {
     return {
-      showAbout: false,
       query: "",
-      messages: []
+      messages: [],
+      listItems: []
     };
   },
   components: {
-    about: About
+    "about": About,
+    "short-cuts": Shortcuts
+  },
+  created(){
+    if (this.$ls.get("shortcuts")) {
+      this.listItems = this.$ls.get("shortcuts");
+    }
   },
   methods: {
     /*function changes route while passing search query*/
@@ -63,9 +73,15 @@ export default {
 .content {
   text-align: center;
   position: absolute;
-  top: 40%;
+  background: url('../assets/img/reel-graphic.svg')#2b2d2f;
+  background-repeat: no-repeat;
+  background-position: 15px;
+  top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
 .errors li {
@@ -83,7 +99,6 @@ p {
 }
 
 #about {
-  font-size: 0.9rem;
   color: rgb(255, 255, 255);
   margin-top: 0;
   margin-right: 5px;
@@ -91,7 +106,6 @@ p {
 }
 
 .about-toggle {
-  font-size: 0.9rem;
   color: white;
   background-color: transparent;
   width: 50px;
@@ -131,7 +145,7 @@ p {
 }
 
 ::placeholder {
-  color: rgb(156, 156, 156);
+  color:#cecece;
   font-size: 1.2em;
 }
 
@@ -144,11 +158,9 @@ input {
     padding-left: 20px;
     padding-right: 20px;
     margin-top: 15px;
-    float: center;
   }
 
   #about {
-    position: relative;
     background-color: rgb(43, 45, 47, 0.6);
     z-index: 6;
   }
@@ -157,6 +169,19 @@ input {
 @media only screen and (min-width: 670px) {
   #about {
     width: 33%;
+  }
+}
+
+@media only screen and (max-width: 376px) {
+  h1,
+  #send-button,
+  #text-box {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
+  #text-box {
+    width: 75%;
   }
 }
 </style>

@@ -26,6 +26,7 @@ export default {
   methods: {
     removeMovie: function(movie) {
       this.shortcuts.splice(this.shortcuts.indexOf(movie), 1);
+      this.$ls.set('shortcuts', this.shortcuts);
     }
   }
 };
@@ -35,8 +36,9 @@ export default {
 .shortcuts {
   list-style-type: none;
   padding: 10px;
-  background: #2f4f4f;
   width: 25%;
+  margin-right: 10px;
+  text-align: right;
   float: right;
 }
 
@@ -45,16 +47,26 @@ export default {
 }
 
 .list-item {
-  color: lightgray;
+  color: white;
+  text-decoration: none;
 }
+
+.list-item:hover {
+  color:#cecece;
+}
+
 .remove {
   font-size: 1.1rem;
   color: white;
-  background: #2b2d2f;
+  background: none;
   border: none;
   margin-left: 10px;
   padding: 2px;
   cursor: pointer;
+}
+
+.remove:hover {
+  color: tomato;
 }
 
 @media only screen and (max-width: 375px) {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <body>
     <h1>Movie Search & Learn</h1>
     <message-container v-bind:messages="messages"></message-container>
     <short-cuts :shortcuts="listItems" class="shortcuts"></short-cuts>
@@ -13,7 +13,7 @@
       <button v-on:click="getMovies" id="send-button">Search</button>
     </div>
     <!--Iterates through results and displays movie search data in a list -->
-    <div>
+    <div id="search-results">
       <load-spinner v-if="showLoading"></load-spinner>
       <ul class="movies" v-if="results && results.Search.length > 0">
         <li class="search-result" v-for="(movie,index) in results.Search" :key="index">
@@ -34,7 +34,7 @@
         </li>
       </ul>
     </div>
-  </div>
+  </body>
 </template>
 
 <script>
@@ -61,38 +61,60 @@ export default {
   },
   created() {
     this.getMovies();
+    if (this.$ls.get("shortcuts")) {
+      this.listItems = this.$ls.get("shortcuts");
+    }
   },
   methods: {
     /*movie is passed into listItems array*/
     saveMovie: function(movie) {
       this.listItems.push(movie);
+      this.$ls.set("shortcuts", this.listItems);
     },
     getMovies: function() {
       this.results = null;
       this.showLoading = true;
+      let cacheLabel = "movieSearch_" + this.$route.params.query;
+      let cacheExpiry = 15 * 60 * 1000; // 15 minutes
+      if (this.$ls.get(cacheLabel)) {
+        console.log("Cached query detected.");
+        this.results = this.$ls.get(cacheLabel);
+        this.showLoading = false;
+      } else {
+        console.log("No cache available. Making API request.");
 
-      axios
-        .get("http://www.omdbapi.com/?apikey=b72bc356", {
-          /*Sends query as a search item, using "type" to filter results */
-          params: {
-            s: this.$route.params.query,
-            type: "movie"
-          }
-        })
-        .then(response => {
-          this.results = response.data;
-          /*A "False" response will push data to error messages array */
-          if (this.results.Response == "False") {
-            this.messages.push(response.data);
-          }
-          this.showLoading = false;
-        });
+        axios
+          .get("http://www.omdbapi.com/?apikey=b72bc356", {
+            /*Sends query as a search item, using "type" to filter results */
+            params: {
+              s: this.$route.params.query,
+              type: "movie"
+            }
+          })
+          .then(response => {
+            this.$ls.set(cacheLabel, response.data, cacheExpiry);
+            console.log("New query has been cached as: " + cacheLabel);
+            this.results = response.data;
+            this.showLoading = false;
+            /*A "False" response will push data to error messages array */
+            if (this.results.Response == "False") {
+              this.messages.push(response.data);
+            }
+            this.showLoading = false;
+          });
+      }
     }
   }
-};
+}
 </script>
 
 <style scoped>
+body {
+  background: url('../assets/img/reel-graphic.svg')#2b2d2f;
+  background-repeat: no-repeat;
+  background-position-y: 30px;
+}
+
 .errors li {
   color: red;
   border: solid red 1px;
@@ -105,13 +127,14 @@ h2 {
   margin-left: 0;
 }
 .save {
-  background-color: darkslategray;
+  background-color: transparent;
+  border: 1.5px solid white;
   color: white;
   padding: 10px;
 }
 
 .save:hover {
-  background-color: #293d3d;
+  background-color: rgb(59, 63, 66, 0.5);
 }
 
 .learn-more:hover {
@@ -125,6 +148,9 @@ h2 {
 
 .shortcuts {
   margin: 0px;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
 }
 
 p {
@@ -171,18 +197,24 @@ input {
   margin: 2px;
 }
 
-ul {
+#search-results {
+  width: 75%;
+}
+
+.movies {
   list-style-type: none;
   padding: 0;
 }
-li {
+.search-result {
   display: inline-block;
   text-align: center;
+  vertical-align: top;
   width: 235px;
   min-height: 300px;
-  border: solid 1.5px #757575;
+  border: none;
   padding: 5px;
   margin: 5px;
+  box-shadow: 0px 0px 3px rgb(131, 131, 131);
 }
 
 a {
@@ -198,12 +230,25 @@ a {
   margin-left: 2px;
   color: lightgray;
 }
+
+@media only screen and (max-width: 580px) {
+  .shortcuts {
+    width: 50%;
+    position: unset;
+  }
+  #search-results {
+    width: 100%;
+  }
+  .movies {
+    text-align: center;
+  }
+}
+
 @media only screen and (max-width: 426px) {
   .shortcuts {
     display: flexbox;
-    margin-bottom: 10px;
-    float: left;
     width: 90%;
+    position: unset;
   }
 
   #text-box {

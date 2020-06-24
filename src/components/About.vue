@@ -1,12 +1,14 @@
 <template>
   <p class="body">
-    This application allows the user to search for any movie in the OMDB API database (http://www.omdbapi.com/) and learn basic facts about the movie. Each search result that appears can also be added to a list for the user's convenience.
-    <br /> A Vue JS project by John Hu
+    This application allows the user to search for any movie in the OMDB API database (http://www.omdbapi.com/) and learn basic facts about the movie. Search results can be added to a list which is stored into the user's local cache for easy access.
+    <br />A Vue JS project by John Hu
     <a href="http://www.github.com/johnhu">
-      <span class="fa-stack fa-lg">
-        <i class="fas fa-circle fa-stack-2x" title="Visit John's Github"></i>
-        <i class="fab fa-github fa-stack-1x fa-inverse" title="Visit John's Github"></i>
-      </span>
+      <img
+        src="../assets/img/github-white.svg"
+        title="Visit John's Github"
+        width="16px"
+        height="16px"
+      />
     </a>
   </p>
 </template>
@@ -23,4 +25,10 @@ export default {
 </script>
 
 <style scoped>
+.body {
+  background-color: rgb(43, 45, 47, 0.5);
+}
+img:hover {
+  opacity: 0.5;
+}
 </style>

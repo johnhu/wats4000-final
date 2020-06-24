@@ -1,34 +1,33 @@
 <template>
-  <div>
+  <body>
     <h1>Movie Search & Learn</h1>
     <router-link to="/">Home</router-link> |
     <router-link
       :to="{ name: 'Search', params: { 
               query: $route.params.query } }"
     >Back</router-link>
+    <load-spinner v-if="showLoading"></load-spinner>
     <section v-if="movieData!=null" class="container">
-      <load-spinner v-if="showLoading"></load-spinner>
       <div class="movie-info">
-        <h2>{{ movieData.Title }}</h2>
-        <h3>{{ movieData.Year }}</h3>
+        <h2>{{ movieData.Title }} ({{ movieData.Year }})</h2>
         <h3 v-if="movieData.Plot!='N/A'">{{ movieData.Plot }}</h3>
         <h3 v-else>
-          <i>Plot not available</i>
+          <i>Plot not available.</i>
         </h3>
-        <h3>Cast: {{ movieData.Actors }}</h3>
-        <h3>Director: {{ movieData.Director }}</h3>
-        <h3>Rated: {{ movieData.Rated }}</h3>
-        <h3>Country: {{ movieData.Country }}</h3>
-        <h3>Runtime: {{ movieData.Runtime }}</h3>
+        <h3><b>Cast:</b> {{ movieData.Actors }}</h3>
+        <h3><b>Director:</b> {{ movieData.Director }}</h3>
+        <h3><b>Rated:</b> {{ movieData.Rated }}</h3>
+        <h3><b>Country:</b> {{ movieData.Country }}</h3>
+        <h3><b>Runtime:</b> {{ movieData.Runtime }}</h3>
         <!--Shows scores only if available in the array-->
-        <h3 v-if="movieData.Ratings[1]">{{ movieData.Ratings[1].Value }} on Rotten Tomatoes</h3>
-        <h3 v-if="movieData.Ratings[0]">{{ movieData.Ratings[0].Value }} on IMDb</h3>
+        <h3 v-if="movieData.Ratings[1]"><b>{{ movieData.Ratings[1].Value }}</b> on Rotten Tomatoes</h3>
+        <h3 v-if="movieData.Ratings[0]"><b>{{ movieData.Ratings[0].Value }}</b> on <a :href="'https://www.imdb.com/title/'+movieData.imdbID" id="imdb">IMDb</a></h3>
       </div>
       <div class="movie-poster">
         <img :src="movieData.Poster" />
       </div>
     </section>
-  </div>
+  </body>
 </template>
 
 <script>
@@ -43,7 +42,7 @@ export default {
   data() {
     return {
       movieData: Object,
-      showLoading: true
+      showLoading: false
     };
   },
   /*created hook runs methods upon page load */
@@ -61,19 +60,23 @@ export default {
         this.movieData = response.data;
         this.showLoading = false;
       })
-      .catch(error => {
+      .catch(response => {
         this.messages.push({
           type: "error",
-          text: error.message
+          text: response.data
         });
       });
-    this.showLoading = false;
   }
 };
 </script>
 
 <style scoped>
-@media only screen and (min-width: 900px) {
+  body{
+    background: url('../assets/img/reel-graphic.svg')#2b2d2f;
+    background-repeat: no-repeat;
+    background-position-y: 30px;
+  }
+
   .container {
     margin: auto;
     padding: 10px;
@@ -82,12 +85,16 @@ export default {
 
   .movie-info {
     width: 50%;
-    background: darkslategray;
-    padding: 10px;
+    text-shadow: 2px 2px black;
   }
 
   .movie-poster {
-    margin-left: 10%;
+    text-align: center;
+    width: 50%;
+  }
+
+  img {
+    box-shadow: 2px 2px 7px black;
   }
 
   .errors li {
@@ -95,49 +102,48 @@ export default {
     border: solid red 1px;
     padding: 5px;
   }
-  h1,
-  h2 {
-    font-weight: bold;
+
+  h3 {
+    font-weight: normal;
   }
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    display: inline-block;
-    width: 300px;
-    min-height: 300px;
-    border: solid 1px #e8e8e8;
-    padding: 10px;
-  }
   a {
     color: yellow;
   }
-}
+  a:hover {
+    color: rgb(206, 206, 29);
+  }
+  #imdb {
+    color: white;
+  }
+  #imdb:hover {
+    color: rgb(196, 196, 196);
+  }
+
 /*media queries to set breakpoints for responsiveness*/
 @media only screen and (max-width: 900px) {
+  img {
+    width: 90%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  body{
+    background-position: center;
+  }
   .container {
     margin: auto;
     display: grid;
   }
   .movie-info {
-    margin-bottom: 20px;
+    width: 100%;
   }
   .movie-poster {
-    margin-left: 0;
-  }
-  a {
-    color: yellow;
+    width: 100%;
   }
 }
 @media only screen and (max-width: 365px) {
   .movie-info {
-    margin-bottom: 20px;
     width: 95%;
-  }
-  .movie-poster {
-    margin-left: 0;
   }
 
   img {
